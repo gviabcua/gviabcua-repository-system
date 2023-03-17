@@ -1,8 +1,8 @@
 gviabcua-repository-system
 
-#Electronic Institutional Repository Plugin for WinterCMS 1.2.0 and newest
+# Electronic Institutional Repository Plugin for WinterCMS 1.2.0 and newest
 
-#Плагін електронного інституційного репозитарію цифрового контенту для WinterCMS 1.2.0 і новіших
+# Плагін електронного інституційного репозитарію цифрового контенту для WinterCMS 1.2.0 і новіших
 
 СТАН - початок розробки (in development)
 
