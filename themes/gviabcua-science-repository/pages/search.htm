@@ -1,0 +1,85 @@
+title = "search"
+url = "/search"
+layout = "default"
+is_hidden = 0
+==
+<?php
+use Gviabcua\Repository\Models\Authors;
+use Gviabcua\Repository\Models\Matherials;
+use Gviabcua\Repository\Models\Collections;
+use Gviabcua\Repository\Models\Themes;
+use Gviabcua\Repository\Models\Types;
+
+function onInit(){
+	$this['years'] = Matherials::select("year")->groupby('year')->orderby("year", "desc")->get();
+	$this['authors'] = Authors::select("id","name")->groupby('id','name')->orderby("name", "asc")->get();
+
+	
+	$s_year = trim(get('s_year'));
+	$this['s_year'] = $s_year;
+	
+	$s_author = trim(get('s_author'));
+	$this['s_author'] = $s_author;
+	
+	$this['Matherial'] = Matherials::where('active', 1);
+	
+	if($s_year > 0){
+		$this['Matherial'] =$this['Matherial']->where("year", $s_year);
+	}
+	if($s_author > 0){
+		$this['Matherial'] =$this['Matherial']->whereHas('authors', function ($q) use ($s_author){
+	  		$q->where("id","=",$s_author);
+		});
+	}
+	
+	
+	$this['Matherial'] =$this['Matherial']->get();
+	
+}
+?>
+==
+<div class="card mt-3">
+	<div class="card-header text-center"><h6 class="text-center">{{"Розширений пошук"|_}}</h6></div>
+	<div class="card-body">
+		<form class="row">
+			<div class="col-md-4">
+				<select class="form-select" name = "s_author">
+					<option value="-1">{{"Автор"|_}}</option>
+					{%for rec in authors%}
+						<option value="{{rec.id}}" {%if s_author == rec.id%}selected{%endif%}>{{rec.name}}</option>
+					{%endfor%}
+				</select>
+			</div>
+			<div class="col-md-4">
+				<select class="form-select" name = "s_year">
+					<option value="-1">{{"Рік"|_}}</option>
+					{%for rec in years%}
+						<option value="{{rec.year}}" {%if s_year == rec.year%}selected{%endif%}>{{rec.year}}</option>
+					{%endfor%}
+				</select>
+			</div>
+			<div class="col-md-4">
+				
+			</div>
+			<div class="col-md-4">
+				
+			</div>
+			<div class="row mt-3">
+				<div class="col-md-4"></div>
+				<div class="col-md-4">
+					<button type="submit" class="btn btn-block btn-sm btn-primary"><i class="bi bi-search"></i> {{"Пошук"|_}}</button>
+				</div>
+				<div class="col-md-4"></div>
+			</div>
+		</form>
+		
+		
+	</div>
+</div>
+
+<div class="card mt-3">
+	<div class="card-header text-center"><h6 class="text-center">{{"Результати пошуку"|_}}</h6></div>
+	<div class="card-body">
+		{% partial 'matherials' matherials = Matherial %}
+	</div>
+</div>
