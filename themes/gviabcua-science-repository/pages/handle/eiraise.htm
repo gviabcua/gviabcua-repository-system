@@ -36,8 +36,8 @@ function onInit(){
 					<h6>{{Matherial.title_orig}}</h6>
 				</div>
 				<div class="card-body">
-					{% set col1 = "col-md-3 mb-3" %}
-					{% set col2 = "col-md-9 mb-3" %}
+					{% set col1 = "col-md-3 mb-1" %}
+					{% set col2 = "col-md-9 mb-1" %}
 					
 					<div class="row">
 						<div class="{{col1}}">{{"Назва оригінал"|_}}</div>
@@ -54,7 +54,7 @@ function onInit(){
 					{% if Matherial.year%}
 						<div class="row">
 							<div class="{{col1}}">{{"Рік публікації"|_}}</div>
-							<div class="{{col2}}">{{Matherial.year}}</div>
+							<div class="{{col2}}"><a href="/search?s_year={{Matherial.year}}">{{Matherial.year}}</a></div>
 						</div>
 					{%endif%}
 					
@@ -68,7 +68,7 @@ function onInit(){
 									{%else%}
 										<img class='small-photo' src="{{"assets/images/nophoto.png"|theme}}">
 									{%endif%}
-									{{author.name}}
+									<a href="/search?s_author={{author.id}}">{{author.name}}</a>
 								</span><br>
 							{%endfor%}
 						</div>

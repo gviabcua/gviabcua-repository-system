@@ -26,7 +26,7 @@ function onStart(){
 				<tr>
 					<td>{{rec.id}}</td>
 					<td><a href="{{identify}}{{rec.id}}">{{rec.title_orig}}</a></td>
-					<td>{{rec.year}}</td>
+					<td><a href="/search?s_year={{rec.year}}">{{rec.year}}</a></td>
 					<td>
 						{%for author in rec.authors%}
 							<span class="nowrap">
@@ -35,7 +35,7 @@ function onStart(){
 								{%else%}
 									<img class='small-photo' src="{{"assets/images/nophoto.png"|theme}}">
 								{%endif%}
-								{{author.name}}
+								<a href="/search?s_author={{author.id}}">{{author.name}}</a>
 							</span><br>
 						{%endfor%}
 					</td>

@@ -4,6 +4,7 @@ layout = "default"
 is_hidden = 0
 ==
 <?php
+use Gviabcua\Repository\Models\Authors;
 use Gviabcua\Repository\Models\Matherials;
 
 function onEnd() {
@@ -11,16 +12,48 @@ function onEnd() {
 }
 function onInit(){
 	$this['matherials'] = Matherials::with('authors')->with('collections')->with('themes')->with('types')->orderby('id', 'desc')->limit(25)->get();
+	$this['years'] = Matherials::select("year")->groupby('year')->orderby("year", "desc")->get();
+	$authors = Authors::select("name")->groupby('name')->orderby("name", "asc")->get();
+	$authors_letter = [];
+	foreach($authors as $author){
+		$letter = mb_substr($author->name, 0, 1);
+		$authors_letter[$letter] = $letter;
+	}
+	$this['authors_letter'] = collect($authors_letter);
 }
 ?>
 ==
 <div class='alert alert-info'>{% content 'information_on_home_page_header' %}</div>
 
+	<div class="card text-center">
+		<div class="card-header">{{"Покажчик авторів (A-Z, А-Я)"|_}}</div>
+		<div class="card-body">
+			{% for l in authors_letter%}
+				<a href="/author_letter/{{l}}">{{l}}</a> &nbsp;
+			{%endfor%}
+		</div>
+	</div>
+	<div class="card text-center">
+		<div class="card-header">{{"Покажчик по рокам"|_}}</div>
+		<div class="card-body">
+			{% for year in years%}
+				<a href="/year/{{year.year}}">{{year.year}}</a> &nbsp;
+			{%endfor%}
+		</div>
+	</div>
+	 
+
+	
+	
+	
 
 {%if matherials is empty  %}
 	{% partial 'template/no_info' %}
 {%else%}
-	<h6 class="text-center">{{"Останні додані матеріали"|_}}</h6>
-	{% partial 'matherials' matherials = matherials%}
-
+	<div class="card mt-3">
+		<div class="card-header text-center"><h6 class="text-center">{{"Останні додані матеріали"|_}}</h6></div>
+		<div class="card-body">
+			{% partial 'matherials' matherials = matherials%}
+		</div>
+	</div>
 {%endif%}
