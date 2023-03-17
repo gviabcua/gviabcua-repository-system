@@ -29,7 +29,7 @@ function onInit(){
 		<div class="card-header">{{"Покажчик авторів (A-Z, А-Я)"|_}}</div>
 		<div class="card-body">
 			{% for l in authors_letter%}
-				<a href="/author_letter/{{l}}">{{l}}</a> &nbsp;
+				<a href="/authors/?letter={{l}}">{{l}}</a> &nbsp;
 			{%endfor%}
 		</div>
 	</div>

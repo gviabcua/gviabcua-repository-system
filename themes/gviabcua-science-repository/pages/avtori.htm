@@ -7,7 +7,15 @@ is_hidden = 0
 use Gviabcua\Repository\Models\Authors;
 
 function onStart(){
-	$authors = Authors::orderby("name","asc")->withCount('matherials')->get();
+	$letter = trim(e(get('letter')));
+	
+	$authors = Authors::orderby("name","asc");
+	if ($letter ){
+		$authors = $authors->where('name', 'like',"$letter%");
+		$this['letter'] = $letter;
+	}
+	$authors = $authors->withCount('matherials')->get();
+	
 	$array = [];
 	foreach($authors as $author){
 		$array[mb_substr($author->name, 0, 1)][$author->id]['name'] = $author->name;
@@ -18,7 +26,7 @@ function onStart(){
 ?>
 ==
 <div class="card mt-3">
-	<div class="card-header text-center"><h6 class="text-center">{{"Алфавітний покажчик авторів"|_}}</h6></div>
+	<div class="card-header text-center"><h6 class="text-center">{{"Алфавітний покажчик авторів"|_}} {%if letter%}({{letter}}){%endif%}</h6></div>
 	<div class="card-body">
 		{%if authors%}
 			<div class="row" data-masonry='{"percentPosition": true }'>
