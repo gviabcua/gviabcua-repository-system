@@ -1,0 +1,15 @@
+body{
+	font-size: 14px;
+
+}
+nav{
+	font-size: 14px;
+}
+
+.small-photo{
+	width:15px;
+	height:15px;
+}
+.nowrap{
+	white-space: nowrap;
+}

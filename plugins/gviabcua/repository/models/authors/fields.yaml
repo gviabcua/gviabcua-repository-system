@@ -1,0 +1,21 @@
+fields:
+    name:
+        label: 'gviabcua.repository::lang.Name'
+        span: left
+        type: text
+    photo:
+        label: 'gviabcua.repository::lang.photo'
+        mode: image
+        imageWidth: '200'
+        imageHeight: '200'
+        useCaption: true
+        thumbOptions:
+            mode: crop
+            extension: auto
+        span: auto
+        type: fileupload
+    description:
+        label: 'gviabcua.repository::lang.description'
+        size: huge
+        span: left
+        type: richeditor

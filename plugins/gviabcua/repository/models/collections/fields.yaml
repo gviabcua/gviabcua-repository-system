@@ -1,0 +1,5 @@
+fields:
+    collection:
+        label: 'gviabcua.repository::lang.Collection'
+        span: full
+        type: text

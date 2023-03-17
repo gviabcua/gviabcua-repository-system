@@ -1,0 +1,12 @@
+name: 'Gviabcua Repository Theme'
+description: 'Gviabcua theme for science Repository'
+author: Gviabcua
+homepage: 'https://github.com/gviabcua/gviabcua-repository-system'
+code: gviabcua-repository
+authorCode: Prismify
+parent: ''
+database: '0'
+previewImage: assets/images/theme-preview.png
+form: config/f.yaml
+require: config/r.yaml
+translate: config/t.yaml

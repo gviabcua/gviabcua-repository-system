@@ -1,0 +1,10 @@
+name: Themes
+form: $/gviabcua/repository/models/themes/fields.yaml
+modelClass: Gviabcua\Repository\Models\Themes
+defaultRedirect: gviabcua/repository/themes
+create:
+    redirect: 'gviabcua/repository/themes/update/:id'
+    redirectClose: gviabcua/repository/themes
+update:
+    redirect: gviabcua/repository/themes
+    redirectClose: gviabcua/repository/themes

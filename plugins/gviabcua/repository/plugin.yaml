@@ -1,0 +1,32 @@
+plugin:
+    name: 'gviabcua.repository::lang.plugin.name'
+    description: 'gviabcua.repository::lang.plugin.description'
+    author: Gviabcua
+    icon: wn-icon-database
+    replaces: {  }
+navigation:
+    repository-item:
+        label: 'gviabcua.repository::lang.Repository'
+        url: gviabcua/repository/matherials
+        icon: icon-database
+        sideMenu:
+            matherials-item:
+                label: 'gviabcua.repository::lang.Matherials'
+                url: gviabcua/repository/matherials
+                icon: icon-database
+            authors-item:
+                label: 'gviabcua.repository::lang.Authors'
+                url: gviabcua/repository/authors
+                icon: icon-users
+            theme-item:
+                label: 'gviabcua.repository::lang.Themes'
+                url: gviabcua/repository/themes
+                icon: icon-book
+            types-item:
+                label: 'gviabcua.repository::lang.types'
+                url: gviabcua/repository/types
+                icon: icon-list
+            collection-item:
+                label: 'gviabcua.repository::lang.Collections'
+                url: gviabcua/repository/collections
+                icon: icon-archive

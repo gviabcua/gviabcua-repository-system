@@ -1,0 +1,11 @@
+<?php
+	$data = @json_decode($value);
+
+	if(($data != null) and !empty($data)){
+		$array = array();
+		foreach ($value as $v){
+			$array[] = $v->file_name ." (".round((($v->file_size)/1024),1)."kb)";
+		}
+		echo implode("<br> ", $array);
+	}
+?>

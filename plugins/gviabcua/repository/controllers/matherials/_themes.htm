@@ -1,0 +1,11 @@
+<?php
+	$data = @json_decode($value);
+
+	if(($data != null) and !empty($data)){
+		$array = array();
+		foreach ($value as $v){
+			$array[] = $v->theme;
+		}
+		echo implode("<br> ", $array);
+	}
+?>

@@ -1,0 +1,10 @@
+name: Collections
+form: $/gviabcua/repository/models/collections/fields.yaml
+modelClass: Gviabcua\Repository\Models\Collections
+defaultRedirect: gviabcua/repository/collections
+create:
+    redirect: 'gviabcua/repository/collections/update/:id'
+    redirectClose: gviabcua/repository/collections
+update:
+    redirect: gviabcua/repository/collections
+    redirectClose: gviabcua/repository/collections

@@ -1,0 +1,12 @@
+list: $/gviabcua/repository/models/matherials/columns.yaml
+modelClass: Gviabcua\Repository\Models\Matherials
+title: Matherials
+noRecordsMessage: 'backend::lang.list.no_records'
+showSetup: true
+showCheckboxes: true
+recordsPerPage: 20
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'
+recordUrl: 'gviabcua/repository/matherials/update/:id'

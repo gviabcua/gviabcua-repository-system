@@ -1,0 +1,38 @@
+1.0.1:
+    - 'Initialize plugin.'
+1.0.2:
+    - 'Created table gviabcua_repository_authors'
+    - builder_table_create_gviabcua_repository_authors.php
+1.0.3:
+    - 'Created table gviabcua_repository_themes'
+    - builder_table_create_gviabcua_repository_themes.php
+1.0.4:
+    - 'Created table gviabcua_repository_types'
+    - builder_table_create_gviabcua_repository_types.php
+1.0.5:
+    - 'Created table gviabcua_repository_matherials'
+    - builder_table_create_gviabcua_repository_matherials.php
+1.0.6:
+    - 'Created table gviabcua_repository_matherials_authors'
+    - builder_table_create_gviabcua_repository_matherials_authors.php
+1.0.7:
+    - 'Updated table gviabcua_repository_matherials_authors'
+    - builder_table_update_gviabcua_repository_matherials_authors.php
+1.0.8:
+    - 'Created table gviabcua_repository_matherials_themes'
+    - builder_table_create_gviabcua_repository_matherials_themes.php
+1.0.9:
+    - 'Created table gviabcua_repository_matherials_types'
+    - builder_table_create_gviabcua_repository_matherials_types.php
+1.0.10:
+    - 'Created table gviabcua_repository_collections'
+    - builder_table_create_gviabcua_repository_collections.php
+1.0.11:
+    - 'Created table gviabcua_repository_matherials_collections'
+    - builder_table_create_gviabcua_repository_matherials_collections.php
+1.0.12:
+    - 'Updated table gviabcua_repository_matherials'
+    - builder_table_update_gviabcua_repository_matherials.php
+1.0.13:
+    - 'Updated table gviabcua_repository_matherials'
+    - builder_table_update_gviabcua_repository_matherials_2.php

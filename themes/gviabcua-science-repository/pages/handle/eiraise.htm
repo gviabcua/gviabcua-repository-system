@@ -1,0 +1,233 @@
+title = "Матеріал"
+url = "/handle/:handler_id/:id"
+layout = "default"
+is_hidden = 0
+==
+<?php
+use Gviabcua\Repository\Models\Matherials;
+
+
+function onEnd() {
+    $this->page->title = isset($this->Matherial->title) ? $this->Matherial->title : "?";
+}
+function onInit(){
+	$id = $this->param('id');
+	if($id > 0){
+		$this['Matherial'] = Matherials::where("id", $id)->with('authors')->with('collections')->with('themes')->with('types')->first();
+		if(isset($this['Matherial']->id)){
+			Matherials::where("id", $id)->increment('views');
+			$this['identify'] = Matherials::getRepositoryUrlHandle()."/$id";
+			$this['Matherial']['title'] = $this['Matherial']->title_orig;
+		}else{
+			unset($this['Matherial']);
+		}
+	}
+}
+?>
+==
+{%if Matherial is empty%}
+	{% partial 'template/no_info' %}
+{%else%}
+	<section>
+		<article> 
+			<div class="alert alert-info">Будь ласка, використовуйте цей ідентифікатор, щоб цитувати або посилатися на цей матеріал: <code>{{identify}}</code></div>
+			<div class="card">
+				<div class="card-header">
+					<h6>{{Matherial.title_orig}}</h6>
+				</div>
+				<div class="card-body">
+					{% set col1 = "col-md-3 mb-3" %}
+					{% set col2 = "col-md-9 mb-3" %}
+					
+					<div class="row">
+						<div class="{{col1}}">{{"Назва оригінал"|_}}</div>
+						<div class="{{col2}}">{{Matherial.title_orig}}</div>
+					</div>
+					
+					{% if Matherial.title_eng%}
+						<div class="row">
+							<div class="{{col1}}">{{"Назва англійською"|_}}</div>
+							<div class="{{col2}}">{{Matherial.title_eng}}</div>
+						</div>
+					{%endif%}
+					
+					{% if Matherial.year%}
+						<div class="row">
+							<div class="{{col1}}">{{"Рік публікації"|_}}</div>
+							<div class="{{col2}}">{{Matherial.year}}</div>
+						</div>
+					{%endif%}
+					
+					<div class="row">
+						<div class="{{col1}}">{{"Автори / укладач(і)"|_}}</div>
+						<div class="{{col2}}">
+							{%for author in Matherial.authors%}
+								<span class="nowrap">
+									{%if author.photo.path%}
+										<img class='small-photo' src="{{author.photo.thumb(50,50,{'mode':'crop'})}}">
+									{%else%}
+										<img class='small-photo' src="{{"assets/images/nophoto.png"|theme}}">
+									{%endif%}
+									{{author.name}}
+								</span><br>
+							{%endfor%}
+						</div>
+					</div>
+					
+			    	{% if Matherial.bibliographic%}
+						<div class="row">
+							<div class="{{col1}}">{{"Бібліографічний опис"|_}}</div>
+							<div class="{{col2}}">{{Matherial.bibliographic}}</div>
+						</div>
+					{%endif%}
+					
+					{% if Matherial.publisher%}
+						<div class="row">
+							<div class="{{col1}}">{{"Видавець/Журнал/Газета/№"|_}}</div>
+							<div class="{{col2}}">{{Matherial.publisher}}</div>
+						</div>
+					{%endif%}
+					
+					{% if Matherial.description%}
+						<div class="row">
+							<div class="{{col1}}">{{"Опис (реферат)"|_}}</div>
+							<div class="{{col2}}">{{Matherial.description|raw}}</div>
+						</div>
+					{%endif%}
+					
+					{% if Matherial.key_words%}
+						<div class="row">
+							<div class="{{col1}}">{{"Ключові слова"|_}}</div>
+							<div class="{{col2}}">{{Matherial.key_words}}</div>
+						</div>
+					{%endif%}
+					
+					{% if Matherial.isbn%}
+						<div class="row">
+							<div class="{{col1}}">ISBN</div>
+							<div class="{{col2}}">{{Matherial.isbn}}</div>
+						</div>
+					{%endif%}
+					
+					{% if Matherial.issn%}
+						<div class="row">
+							<div class="{{col1}}">ISSN</div>
+							<div class="{{col2}}">{{Matherial.issn}}</div>
+						</div>
+					{%endif%}
+					
+					{% if Matherial.udc%}
+						<div class="row">
+							<div class="{{col1}}">{{"УДК"|_}}</div>
+							<div class="{{col2}}">{{Matherial.udc}}</div>
+						</div>
+					{%endif%}
+
+					{% if Matherial.bbc%}
+						<div class="row">
+							<div class="{{col1}}">{{"ББК"|_}}</div>
+							<div class="{{col2}}">{{Matherial.bbc}}</div>
+						</div>
+					{%endif%}
+					
+					{% if Matherial.doi%}
+						<div class="row">
+							<div class="{{col1}}">DOI</div>
+							<div class="{{col2}}">{{Matherial.doi}}</div>
+						</div>
+					{%endif%}
+					
+					{% if Matherial.copyrights%}
+						<div class="row">
+							<div class="{{col1}}">{{"Копірайти"|_}}</div>
+							<div class="{{col2}}">{% for c in Matherial.copyrights%}© {{c.copyright}}<br>{%endfor%}</div>
+						</div>
+					{%endif%}
+					
+					{% if Matherial.copyright_sign%}
+						<div class="row">
+							<div class="{{col1}}">{{"Авторський знак"|_}}</div>
+							<div class="{{col2}}">{{Matherial.copyright_sign}}</div>
+						</div>
+					{%endif%}
+					
+					{% if Matherial.description_full%}
+						<div class="row">
+							<div class="{{col1}}">{{"Опис"|_}}</div>
+							<div class="{{col2}}">{{Matherial.description_full}}</div>
+						</div>
+					{%endif%}
+					
+
+					
+					<div class="row">
+						<div class="{{col1}}">URI</div>
+						<div class="{{col2}}">{{identify}} (URI - Уніфікований ідентифікатор ресурсу)</div>
+					</div>
+					
+					
+					
+					
+			    	<div class="row">
+						<div class="{{col1}}">{{"Колекції"|_}}</div>
+						<div class="{{col2}}">{%for collection in Matherial.collections%}{{collection.collection}}<br>{%endfor%}</div>
+					</div>
+			    	<div class="row">
+						<div class="{{col1}}">{{"Тематика"|_}}</div>
+						<div class="{{col2}}">{%for theme in Matherial.themes%}{{theme.theme}}<br>{%endfor%}</div>
+					</div>
+			    	<div class="row">
+						<div class="{{col1}}">{{"Тип матеріалу"|_}}</div>
+						<div class="{{col2}}">{%for type in Matherial.types%}{{type.type}}<br>{%endfor%}</div>
+					</div>
+					
+					{% if Matherial.url%}
+						<div class="row">
+							<div class="{{col1}}">{{"Посилання"|_}}</div>
+							<div class="{{col2}}"><a href="{{Matherial.url}}" target="_blank">{{"Переглянути"|_}}</a></div>
+						</div>
+					{%endif%}
+					
+					<div class="row">
+						<div class="{{col1}}">{{"Переглядів"|_}}</div>
+						<div class="{{col2}}">{{Matherial.views}}</div>
+					</div>
+					
+					
+				</div>
+				<div class="card-footer text-center">
+					{{"Файли"|_}}
+				</div>
+				<div class="card-body">
+					{% if Matherial.files%}
+						{%for file in Matherial.files %}
+							<div class="row mt-3">
+								<div class='col-md-1'>
+									{%if 'image' in file.content_type%}
+										<img src="{{file.thumb(200,200,{'mode':'crop'})}}" class="card-img-top pad-25" alt="...">
+									{%elseif 'video' in file.content_type%}
+										<img src="{{"assets/images/video.png"|theme}}" class="card-img-top pad-25" alt="...">
+									{%elseif 'application' in file.content_type%}
+										<img src="{{"assets/images/app.png"|theme}}" class="card-img-top pad-25" alt="...">
+									{%else%}
+										<img src="{{"assets/images/text.jpeg"|theme}}" class="card-img-top pad-25" alt="...">
+									{%endif%}
+								</div>
+								<div class='col-md-8'>
+									<b>File name:</b> {{file.file_name}}<br>
+									<b>File size:</b> {{((file.file_size/1024)/1024)|round(2, 'floor')}}Mb<br>
+									<b>File type:</b> {{file.content_type}}<br>
+									<b>File ext:</b> {{file.extension}}<br>
+								</div>
+								<div class='col-md-2'>
+									<a class="btn btn-primary" href="{{file.path}}"><i class="bi bi-cloud-arrow-down"></i> {{"Завантажити"|_}}</a>
+								</div>
+							</div>
+						{%endfor%}
+					{%endif%}
+				</div>
+			</div>
+
+		</article>
+	</section>
+{%endif%}

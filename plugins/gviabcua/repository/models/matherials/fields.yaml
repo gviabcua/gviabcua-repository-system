@@ -1,0 +1,152 @@
+fields:
+    section1:
+        label: 'gviabcua.repository::lang.matherial'
+        span: full
+        type: section
+    title_orig:
+        label: 'gviabcua.repository::lang.title_orig'
+        span: full
+        required: 1
+        type: text
+    title_eng:
+        label: 'gviabcua.repository::lang.title_eng'
+        span: full
+        type: text
+    year:
+        label: 'gviabcua.repository::lang.publishedYear'
+        span: auto
+        required: 1
+        type: number
+    active:
+        label: 'gviabcua.repository::lang.matherialIsActive'
+        span: auto
+        type: switch
+tabs:
+    fields:
+        bibliographic:
+            label: 'gviabcua.repository::lang.bibliographic'
+            size: ''
+            span: full
+            type: textarea
+            tab: 'gviabcua.repository::lang.main'
+        publisher:
+            label: 'gviabcua.repository::lang.publisher'
+            span: full
+            type: number
+            tab: 'gviabcua.repository::lang.main'
+        description:
+            label: 'gviabcua.repository::lang.description'
+            size: ''
+            span: full
+            type: richeditor
+            tab: 'gviabcua.repository::lang.main'
+        isbn:
+            label: ISBN
+            span: auto
+            type: text
+            tab: 'gviabcua.repository::lang.main'
+        issn:
+            label: ISSN
+            span: auto
+            type: text
+            tab: 'gviabcua.repository::lang.main'
+        bbc:
+            label: 'gviabcua.repository::lang.bbc'
+            span: auto
+            type: text
+            tab: 'gviabcua.repository::lang.main'
+        udc:
+            label: 'gviabcua.repository::lang.udc'
+            span: auto
+            type: text
+            tab: 'gviabcua.repository::lang.main'
+        doi:
+            label: DOI
+            span: auto
+            type: text
+            tab: 'gviabcua.repository::lang.main'
+        copyright_sign:
+            label: 'gviabcua.repository::lang.сopyrightSign'
+            span: auto
+            type: text
+            tab: 'gviabcua.repository::lang.main'
+        key_words:
+            label: 'gviabcua.repository::lang.key_words'
+            span: full
+            type: text
+            tab: 'gviabcua.repository::lang.main'
+        url:
+            label: 'gviabcua.repository::lang.url'
+            span: full
+            type: text
+            tab: 'gviabcua.repository::lang.main'
+        copyrights:
+            label: Copyrights
+            prompt: +
+            style: default
+            span: auto
+            type: repeater
+            commentAbove: 'gviabcua.repository::lang.commentToCopyright'
+            tab: 'gviabcua.repository::lang.main'
+            form:
+                fields:
+                    copyright:
+                        label: Copyright
+                        span: full
+                        type: text
+        collections:
+            label: 'gviabcua.repository::lang.Collections'
+            nameFrom: collection
+            descriptionFrom: description
+            span: auto
+            type: relation
+            tab: 'gviabcua.repository::lang.Category'
+        themes:
+            label: 'gviabcua.repository::lang.Themes'
+            nameFrom: theme
+            descriptionFrom: description
+            span: auto
+            type: relation
+            tab: 'gviabcua.repository::lang.Category'
+        authors:
+            label: 'gviabcua.repository::lang.Authors'
+            nameFrom: name
+            descriptionFrom: description
+            span: auto
+            type: relation
+            tab: 'gviabcua.repository::lang.Category'
+        types:
+            label: 'gviabcua.repository::lang.types'
+            nameFrom: type
+            descriptionFrom: description
+            span: auto
+            type: relation
+            tab: 'gviabcua.repository::lang.Category'
+        poster:
+            label: 'gviabcua.repository::lang.poster'
+            mode: image
+            imageWidth: '250'
+            imageHeight: '250'
+            useCaption: true
+            thumbOptions:
+                mode: crop
+                extension: jpg
+            span: auto
+            type: fileupload
+            tab: 'gviabcua.repository::lang.Files'
+        files:
+            label: 'gviabcua.repository::lang.files'
+            mode: file
+            useCaption: true
+            thumbOptions:
+                mode: crop
+                extension: jpg
+            span: auto
+            type: fileupload
+            tab: 'gviabcua.repository::lang.Files'
+        description_full:
+            label: 'gviabcua.repository::lang.descriptionFull'
+            size: giant
+            span: full
+            type: richeditor
+            tab: 'gviabcua.repository::lang.other'

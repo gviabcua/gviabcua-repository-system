@@ -1,0 +1,10 @@
+name: Matherials
+form: $/gviabcua/repository/models/matherials/fields.yaml
+modelClass: Gviabcua\Repository\Models\Matherials
+defaultRedirect: gviabcua/repository/matherials
+create:
+    redirect: 'gviabcua/repository/matherials/update/:id'
+    redirectClose: gviabcua/repository/matherials
+update:
+    redirect: gviabcua/repository/matherials
+    redirectClose: gviabcua/repository/matherials

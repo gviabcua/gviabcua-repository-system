@@ -1,0 +1,35 @@
+columns:
+    id:
+        label: id
+        type: number
+    poster:
+        label: 'gviabcua.repository::lang.poster'
+        type: image
+    title_orig:
+        label: title_orig
+        type: text
+        searchable: true
+    authors:
+        label: 'gviabcua.repository::lang.Authors'
+        type: partial
+        searchable: false
+    types:
+        label: 'gviabcua.repository::lang.types'
+        type: partial
+        searchable: false
+    themes:
+        label: 'gviabcua.repository::lang.Themes'
+        type: partial
+        searchable: false
+    collections:
+        label: 'gviabcua.repository::lang.Collections'
+        type: partial
+        searchable: false
+    files:
+        label: 'gviabcua.repository::lang.files'
+        type: partial
+        searchable: false
+    old_number:
+        label: s
+        type: number
+        searchable: true

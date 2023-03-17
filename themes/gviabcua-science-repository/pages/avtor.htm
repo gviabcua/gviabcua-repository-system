@@ -1,0 +1,45 @@
+title = "Автор"
+url = "/author/:id"
+layout = "default"
+is_hidden = 0
+==
+<?php
+use Gviabcua\Repository\Models\Authors;
+use Gviabcua\Repository\Models\Matherials;
+use Gviabcua\Repository\Models\Collections;
+use Gviabcua\Repository\Models\Themes;
+use Gviabcua\Repository\Models\Types;
+
+function onInit(){
+	$id = $this->param('id');
+	if($id > 0){
+		$this['Author'] = Authors::where("id", $id)->with('matherials')->first();
+		$this['Matherial'] = Matherials::whereHas('authors', function ($q) use ($id){
+	  		$q->where("id","=",$id);
+		})
+		->with('authors')->with('collections')->with('themes')->with('types')->first();
+	}
+}
+?>
+==
+{%if Author is empty%}
+	{% partial 'template/no_info' %}
+{%else%}
+	<div class="card mt-3">
+		<div class="card-header text-center"><h6 class="text-center">{{Author.name}}</h6></div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-3">
+					<img src="{%if Author.photo.path%}{{Author.photo.path}}{%else%}{{"assets/images/nophoto.png"|theme}}{%endif%}" style="width:100%; max-width:250px">
+				</div>
+				<div class="col-md-9">{{Author.description|raw}}</div>
+			</div>
+		</div>
+		<div class="card-footer">
+			<h6 class="text-center">{{"Матеріали автора"|_}}</h6>
+		</div>
+		<div class="card-body">
+			{% partial 'matherials' matherials = Author.matherials author_info=Author%}
+		</div>
+	</div>
+{%endif%}

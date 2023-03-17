@@ -1,0 +1,10 @@
+name: Authors
+form: $/gviabcua/repository/models/authors/fields.yaml
+modelClass: Gviabcua\Repository\Models\Authors
+defaultRedirect: gviabcua/repository/authors
+create:
+    redirect: 'gviabcua/repository/authors/update/:id'
+    redirectClose: gviabcua/repository/authors
+update:
+    redirect: gviabcua/repository/authors
+    redirectClose: gviabcua/repository/authors

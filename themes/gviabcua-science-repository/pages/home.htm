@@ -1,0 +1,26 @@
+title = "home"
+url = "/"
+layout = "default"
+is_hidden = 0
+==
+<?php
+use Gviabcua\Repository\Models\Matherials;
+
+function onEnd() {
+    $this->page->title = Config::get('app.name');
+}
+function onInit(){
+	$this['matherials'] = Matherials::with('authors')->with('collections')->with('themes')->with('types')->orderby('id', 'desc')->limit(25)->get();
+}
+?>
+==
+<div class='alert alert-info'>{% content 'information_on_home_page_header' %}</div>
+
+
+{%if matherials is empty  %}
+	{% partial 'template/no_info' %}
+{%else%}
+	<h6 class="text-center">{{"Останні додані матеріали"|_}}</h6>
+	{% partial 'matherials' matherials = matherials%}
+
+{%endif%}

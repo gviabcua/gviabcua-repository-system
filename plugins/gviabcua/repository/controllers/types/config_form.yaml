@@ -1,0 +1,10 @@
+name: Types
+form: $/gviabcua/repository/models/types/fields.yaml
+modelClass: Gviabcua\Repository\Models\Types
+defaultRedirect: gviabcua/repository/types
+create:
+    redirect: 'gviabcua/repository/types/update/:id'
+    redirectClose: gviabcua/repository/types
+update:
+    redirect: gviabcua/repository/types
+    redirectClose: gviabcua/repository/types
