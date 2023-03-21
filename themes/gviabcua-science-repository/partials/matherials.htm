@@ -16,8 +16,8 @@ function onStart(){
 				<th>{{"Назва"|_}}</th>
 				<th>{{"Рік"|_}}</th>
 				<th>{{"Автори"|_}}</th>
-				<th>{{"Колекції"|_}}</th>
-				<th>{{"Теми"|_}}</th>
+				<!--<th>{{"Колекції"|_}}</th>-->
+				<!--<th>{{"Теми"|_}}</th>-->
 				<th>{{"Типи"|_}}</th>
 			</tr>
 		</thead>
@@ -35,12 +35,12 @@ function onStart(){
 								{%else%}
 									<img class='small-photo' src="{{"assets/images/nophoto.png"|theme}}">
 								{%endif%}
-								<a href="/search?s_author={{author.id}}">{{author.name}}</a>
+								<a href="/author/{{author.id}}">{{author.name}}</a>
 							</span><br>
 						{%endfor%}
 					</td>
-					<td>{%for collection in rec.collections%}{{collection.collection}}<br>{%endfor%}</td>
-					<td>{%for theme in rec.themes%}{{theme.theme}}<br>{%endfor%}</td>
+					<!--<td>{%for collection in rec.collections%}{{collection.collection}}<br>{%endfor%}</td>-->
+					<!--<td>{%for theme in rec.themes%}{{theme.theme}}<br>{%endfor%}</td>-->
 					<td>{%for type in rec.types%}{{type.type}}<br>{%endfor%}</td>
 				</tr>
 			

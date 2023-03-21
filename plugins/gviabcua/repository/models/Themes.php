@@ -29,4 +29,12 @@ class Themes extends Model
      * @var array Attribute names to encode and decode using JSON.
      */
     public $jsonable = [];
+    public $belongsToMany=[
+		'matherials' => [
+			'Gviabcua\Repository\Models\Matherials',
+			'table' => 'gviabcua_repository_matherials_themes',
+	        //'conditions' => 'active = 1',
+			'order' => 'theme'
+		],
+	];
 }

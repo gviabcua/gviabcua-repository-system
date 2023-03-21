@@ -1,0 +1,50 @@
+title = "Типи"
+url = "/types"
+layout = "default"
+is_hidden = 0
+==
+<?php
+use Gviabcua\Repository\Models\Types;
+
+function onStart(){
+	$letter = trim(e(get('letter')));
+	
+	$Types = Types::orderby("type","asc");
+	if ($letter ){
+		$Types = $Types->where('type', 'like',"$letter%");
+		$this['letter'] = $letter;
+	}
+	$Types = $Types->withCount('matherials')->get();
+	
+	$array = [];
+	foreach($Types as $Type){
+		$array[mb_substr($Type->type, 0, 1)][$Type->id]['name'] = $Type->type;
+		$array[mb_substr($Type->type, 0, 1)][$Type->id]['matherials_count'] = $Type->matherials_count;
+	}
+	$this['types'] = collect($array);
+}
+?>
+==
+<div class="card mt-3">
+	<div class="card-header text-center"><h6 class="text-center">{{"Алфавітний покажчик типів"|_}} {%if letter%}({{letter}}){%endif%}</h6></div>
+	<div class="card-body">
+		{%if types%}
+			<div class="row" data-masonry='{"percentPosition": true }'>
+				{%for letter, letters in types%}
+					<div class="col-lg-4 col-md-6 col-sm-12">
+						<div class="card mb-3">
+							<div class="card-header text-center"><b>{{letter|upper}}</b></div>
+							<div class="card-body">
+								{%for id, rec in letters%}
+									<a href="/search?&s_type={{id}}">{{rec.name}}</a> ({{rec.matherials_count}})<br>
+								{%endfor%}
+							</div>
+						</div>
+					</div>
+				{%endfor%}
+			</div>
+		{%else%}
+			{% partial 'template/no_info' %}
+		{%endif%}
+	</div>
+</div>

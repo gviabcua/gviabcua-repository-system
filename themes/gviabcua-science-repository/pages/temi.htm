@@ -1,0 +1,50 @@
+title = "Теми"
+url = "/themes"
+layout = "default"
+is_hidden = 0
+==
+<?php
+use Gviabcua\Repository\Models\Themes;
+
+function onStart(){
+	$letter = trim(e(get('letter')));
+	
+	$Themes = Themes::orderby("theme","asc");
+	if ($letter ){
+		$Themes = $Themes->where('theme', 'like',"$letter%");
+		$this['letter'] = $letter;
+	}
+	$Themes = $Themes->withCount('matherials')->get();
+	
+	$array = [];
+	foreach($Themes as $Theme){
+		$array[mb_substr($Theme->theme, 0, 1)][$Theme->id]['name'] = $Theme->theme;
+		$array[mb_substr($Theme->theme, 0, 1)][$Theme->id]['matherials_count'] = $Theme->matherials_count;
+	}
+	$this['themes'] = collect($array);
+}
+?>
+==
+<div class="card mt-3">
+	<div class="card-header text-center"><h6 class="text-center">{{"Алфавітний покажчик тем"|_}} {%if letter%}({{letter}}){%endif%}</h6></div>
+	<div class="card-body">
+		{%if themes%}
+			<div class="row" data-masonry='{"percentPosition": true }'>
+				{%for letter, letters in themes%}
+					<div class="col-lg-4 col-md-6 col-sm-12">
+						<div class="card mb-3">
+							<div class="card-header text-center"><b>{{letter|upper}}</b></div>
+							<div class="card-body">
+								{%for id, rec in letters%}
+									<a href="/search?&s_theme={{id}}">{{rec.name}}</a> ({{rec.matherials_count}})<br>
+								{%endfor%}
+							</div>
+						</div>
+					</div>
+				{%endfor%}
+			</div>
+		{%else%}
+			{% partial 'template/no_info' %}
+		{%endif%}
+	</div>
+</div>

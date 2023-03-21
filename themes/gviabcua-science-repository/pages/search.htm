@@ -13,6 +13,9 @@ use Gviabcua\Repository\Models\Types;
 function onInit(){
 	$this['years'] = Matherials::select("year")->groupby('year')->orderby("year", "desc")->get();
 	$this['authors'] = Authors::select("id","name")->groupby('id','name')->orderby("name", "asc")->get();
+	$this['collections'] = Collections::select("id","collection")->groupby('id','collection')->orderby("collection", "asc")->get();
+	$this['themes'] = Themes::select("id","theme")->groupby('id','theme')->orderby("theme", "asc")->get();
+	$this['types'] = Types::select("id","type")->groupby('id','type')->orderby("type", "asc")->get();
 
 	
 	$s_year = trim(get('s_year'));
@@ -20,6 +23,15 @@ function onInit(){
 	
 	$s_author = trim(get('s_author'));
 	$this['s_author'] = $s_author;
+	
+	$s_collection = trim(get('s_collection'));
+	$this['s_collection'] = $s_collection;
+	
+	$s_theme = trim(get('s_theme'));
+	$this['s_theme'] = $s_theme;
+	
+	$s_type = trim(get('s_type'));
+	$this['s_type'] = $s_type;
 	
 	$this['Matherial'] = Matherials::where('active', 1);
 	
@@ -31,9 +43,24 @@ function onInit(){
 	  		$q->where("id","=",$s_author);
 		});
 	}
+	if($s_collection > 0){
+		$this['Matherial'] =$this['Matherial']->whereHas('collections', function ($q) use ($s_collection){
+	  		$q->where("id","=",$s_collection);
+		});
+	}
+	if($s_theme > 0){
+		$this['Matherial'] =$this['Matherial']->whereHas('themes', function ($q) use ($s_theme){
+	  		$q->where("id","=",$s_theme);
+		});
+	}
+	if($s_type > 0){
+		$this['Matherial'] =$this['Matherial']->whereHas('types', function ($q) use ($s_type){
+	  		$q->where("id","=",$s_type);
+		});
+	}
 	
 	
-	$this['Matherial'] =$this['Matherial']->get();
+	$this['Matherial'] =$this['Matherial']->orderby("year", "desc")->paginate(20);
 	
 }
 ?>
@@ -50,6 +77,31 @@ function onInit(){
 					{%endfor%}
 				</select>
 			</div>
+			<div class="col-md-4">
+				<select class="form-select" name = "s_collection">
+					<option value="-1">{{"Колекція"|_}}</option>
+					{%for rec in collections%}
+						<option value="{{rec.id}}" {%if s_collection == rec.id%}selected{%endif%}>{{rec.collection}}</option>
+					{%endfor%}
+				</select>
+			</div>
+			<div class="col-md-4">
+				<select class="form-select" name = "s_theme">
+					<option value="-1">{{"Тема"|_}}</option>
+					{%for rec in themes%}
+						<option value="{{rec.id}}" {%if s_theme == rec.id%}selected{%endif%}>{{rec.theme}}</option>
+					{%endfor%}
+				</select>
+			</div>
+			<div class="col-md-4">
+				<select class="form-select" name = "s_type">
+					<option value="-1">{{"Тип"|_}}</option>
+					{%for rec in types%}
+						<option value="{{rec.id}}" {%if s_type == rec.id%}selected{%endif%}>{{rec.type}}</option>
+					{%endfor%}
+				</select>
+			</div>
+			
 			<div class="col-md-4">
 				<select class="form-select" name = "s_year">
 					<option value="-1">{{"Рік"|_}}</option>
@@ -82,4 +134,22 @@ function onInit(){
 	<div class="card-body">
 		{% partial 'matherials' matherials = Matherial %}
 	</div>
+	<center>
+	{{Matherial.appends({
+		's_author':s_author, 
+		's_collection':s_collection,
+		's_theme':s_theme,
+		's_type':s_type,
+		's_year':s_year,
+		})|raw}}
+	{% partial 'template/pagination_count'  pagesss = Matherial %}
+	</center>
+	<style>
+		.pagination{
+			display: inline-flex !important;
+		}
+		.pagination li{
+			padding:10px;
+			}
+	</style>
 </div>

@@ -1,0 +1,10 @@
+[viewBag]
+==
+{%if pagesss.currentPage == 1%}
+	{%set paginate_data = "1-" ~ pagesss.perPage%}
+{%elseif pagesss.currentPage == pagesss.lastPage%}
+	{%set paginate_data = (pagesss.perPage * (pagesss.currentPage - 1) + 1) ~ "-" ~ (pagesss.total) %}
+{%else%}
+	{%set paginate_data = (pagesss.perPage * (pagesss.currentPage - 1) + 1) ~ "-" ~ (pagesss.perPage * pagesss.currentPage) %}
+{%endif%}
+<p class="text-center">{{"Сторінка"|_}} {{pagesss.currentPage }} {{"із"|_}} {{pagesss.lastPage}}. {{"Показано записів"|_}}: {{ paginate_data }}. {{"Всього"|_}}: {{pagesss.total}}</p>

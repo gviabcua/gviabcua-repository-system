@@ -1,0 +1,50 @@
+title = "Колекції"
+url = "/collections"
+layout = "default"
+is_hidden = 0
+==
+<?php
+use Gviabcua\Repository\Models\Collections;
+
+function onStart(){
+	$letter = trim(e(get('letter')));
+	
+	$Collections = Collections::orderby("collection","asc");
+	if ($letter ){
+		$Collections = $Collections->where('collection', 'like',"$letter%");
+		$this['letter'] = $letter;
+	}
+	$Collections = $Collections->withCount('matherials')->get();
+	
+	$array = [];
+	foreach($Collections as $Collection){
+		$array[mb_substr($Collection->collection, 0, 1)][$Collection->id]['name'] = $Collection->collection;
+		$array[mb_substr($Collection->collection, 0, 1)][$Collection->id]['matherials_count'] = $Collection->matherials_count;
+	}
+	$this['collections'] = collect($array);
+}
+?>
+==
+<div class="card mt-3">
+	<div class="card-header text-center"><h6 class="text-center">{{"Алфавітний покажчик колекцій"|_}} {%if letter%}({{letter}}){%endif%}</h6></div>
+	<div class="card-body">
+		{%if collections%}
+			<div class="row" data-masonry='{"percentPosition": true }'>
+				{%for letter, letters in collections%}
+					<div class="col-lg-4 col-md-6 col-sm-12">
+						<div class="card mb-3">
+							<div class="card-header text-center"><b>{{letter|upper}}</b></div>
+							<div class="card-body">
+								{%for id, rec in letters%}
+									<a href="/search?&s_collection={{id}}">{{rec.name}}</a> ({{rec.matherials_count}})<br>
+								{%endfor%}
+							</div>
+						</div>
+					</div>
+				{%endfor%}
+			</div>
+		{%else%}
+			{% partial 'template/no_info' %}
+		{%endif%}
+	</div>
+</div>

@@ -37,16 +37,10 @@ function onInit(){
 		<div class="card-header">{{"Покажчик по рокам"|_}}</div>
 		<div class="card-body">
 			{% for year in years%}
-				<a href="/year/{{year.year}}">{{year.year}}</a> &nbsp;
+				<a href="/search?s_year={{year.year}}">{{year.year}}</a> &nbsp;
 			{%endfor%}
 		</div>
 	</div>
-	 
-
-	
-	
-	
-
 {%if matherials is empty  %}
 	{% partial 'template/no_info' %}
 {%else%}
