@@ -199,6 +199,22 @@ function onInit(){
 					{{"Файли"|_}}
 				</div>
 				<div class="card-body">
+					{% if Matherial.poster%}
+							<div class="row mt-3">
+								<div class='col-md-1'>
+									<img src="{{Matherial.poster.thumb(200,200,{'mode':'crop'})}}" class="card-img-top pad-25" alt="...">
+								</div>
+								<div class='col-md-8'>
+									<b>File name:</b> {{Matherial.poster.file_name}}<br>
+									<b>File size:</b> {{((Matherial.poster.file_size/1024)/1024)|round(2, 'floor')}}Mb<br>
+									<b>File type:</b> {{Matherial.poster.content_type}}<br>
+									<b>File ext:</b> {{Matherial.poster.extension}}<br>
+								</div>
+								<div class='col-md-2'>
+									<a class="btn btn-primary" href="{{Matherial.poster.path}}"><i class="bi bi-cloud-arrow-down"></i> {{"Завантажити"|_}}</a>
+								</div>
+							</div>
+					{%endif%}
 					{% if Matherial.files%}
 						{%for file in Matherial.files %}
 							<div class="row mt-3">
