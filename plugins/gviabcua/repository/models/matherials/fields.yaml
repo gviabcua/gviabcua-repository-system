@@ -32,7 +32,7 @@ tabs:
         publisher:
             label: 'gviabcua.repository::lang.publisher'
             span: full
-            type: number
+            type: text
             tab: 'gviabcua.repository::lang.main'
         description:
             label: 'gviabcua.repository::lang.description'
