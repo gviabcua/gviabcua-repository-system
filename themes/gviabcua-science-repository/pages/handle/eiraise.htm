@@ -23,6 +23,9 @@ function onInit(){
 		}
 	}
 }
+function onCountDownload(){
+	Matherials::where("id", trim(e(post('id'))))->increment('downloads');
+}
 ?>
 ==
 {%if Matherial is empty%}
@@ -181,69 +184,106 @@ function onInit(){
 						<div class="{{col2}}">{%for type in Matherial.types%}{{type.type}}<br>{%endfor%}</div>
 					</div>
 					
-					{% if Matherial.url%}
-						<div class="row">
-							<div class="{{col1}}">{{"Посилання"|_}}</div>
-							<div class="{{col2}}"><a href="{{Matherial.url}}" target="_blank">{{"Переглянути"|_}}</a></div>
-						</div>
-					{%endif%}
-					
 					<div class="row">
-						<div class="{{col1}}">{{"Переглядів"|_}}</div>
+						<div class="{{col1}}">{{"Переглядів картки"|_}}</div>
 						<div class="{{col2}}">{{Matherial.views}}</div>
 					</div>
+					<div class="row">
+						<div class="{{col1}}">{{"Завантажень/Переглядів матеріалів"|_}}</div>
+						<div class="{{col2}}">{{Matherial.downloads}}</div>
+					</div>
 					
-					
 				</div>
-				<div class="card-footer text-center">
-					{{"Файли"|_}}
-				</div>
-				<div class="card-body">
-					{% if Matherial.poster%}
-							<div class="row mt-3">
-								<div class='col-md-1'>
-									<img src="{{Matherial.poster.thumb(200,200,{'mode':'crop'})}}" class="card-img-top pad-25" alt="...">
-								</div>
-								<div class='col-md-8'>
-									<b>File name:</b> {{Matherial.poster.file_name}}<br>
-									<b>File size:</b> {{((Matherial.poster.file_size/1024)/1024)|round(2, 'floor')}}Mb<br>
-									<b>File type:</b> {{Matherial.poster.content_type}}<br>
-									<b>File ext:</b> {{Matherial.poster.extension}}<br>
-								</div>
-								<div class='col-md-2'>
-									<a class="btn btn-primary" href="{{Matherial.poster.path}}"><i class="bi bi-cloud-arrow-down"></i> {{"Завантажити"|_}}</a>
-								</div>
+			</div>
+			
+				{% if Matherial.url|length > 5%}
+					<div class="card mt-2">
+						<div class="card-header text-center">
+							{{"Посилання на матеріал"|_}}
+						</div>
+						<div class="card-body">
+							<div class="row">
+								<div class="{{col1}}">URL</div>
+								<div class="{{col2}}"><i class="bi bi-link-45deg"></i> {{Matherial.url}}</div>
 							</div>
-					{%endif%}
-					{% if Matherial.files%}
-						{%for file in Matherial.files %}
-							<div class="row mt-3">
-								<div class='col-md-1'>
-									{%if 'image' in file.content_type%}
-										<img src="{{file.thumb(200,200,{'mode':'crop'})}}" class="card-img-top pad-25" alt="...">
-									{%elseif 'video' in file.content_type%}
-										<img src="{{"assets/images/video.png"|theme}}" class="card-img-top pad-25" alt="...">
-									{%elseif 'application' in file.content_type%}
-										<img src="{{"assets/images/app.png"|theme}}" class="card-img-top pad-25" alt="...">
-									{%else%}
-										<img src="{{"assets/images/text.jpeg"|theme}}" class="card-img-top pad-25" alt="...">
-									{%endif%}
-								</div>
-								<div class='col-md-8'>
-									<b>File name:</b> {{file.file_name}}<br>
-									<b>File size:</b> {{((file.file_size/1024)/1024)|round(2, 'floor')}}Mb<br>
-									<b>File type:</b> {{file.content_type}}<br>
-									<b>File ext:</b> {{file.extension}}<br>
-								</div>
-								<div class='col-md-2'>
-									<a class="btn btn-primary" href="{{file.path}}"><i class="bi bi-cloud-arrow-down"></i> {{"Завантажити"|_}}</a>
-								</div>
+							<div class="row">
+								<div class="{{col1}}">{{"Перегляд"|_}}</div>
+								<div class="{{col2}}"><a href="javascript:" onclick='onCountDownloadView("{{Matherial.url}}")'><i class="bi bi-eye"></i> {{"Переглянути"|_}}</a></div>
 							</div>
-						{%endfor%}
-					{%endif%}
-				</div>
+						</div>
+					</div>
+				{%endif%}
+			
+			
+			<div class="card mt-2">
+				{% if (Matherial.poster) or (Matherial.files.count > 0) %}
+					<div class="card-header text-center">
+						{{"Файли"|_}}
+					</div>
+					<div class="card-body">
+						{% if Matherial.poster%}
+								<div class="row mt-3">
+									<div class='col-md-1'>
+										<img src="{{Matherial.poster.thumb(200,200,{'mode':'crop'})}}" class="card-img-top pad-25" alt="...">
+									</div>
+									<div class='col-md-8'>
+										<b>File name:</b> {{Matherial.poster.file_name}}<br>
+										<b>File size:</b> {{((Matherial.poster.file_size/1024)/1024)|round(2, 'floor')}}Mb<br>
+										<b>File type:</b> {{Matherial.poster.content_type}}<br>
+										<b>File ext:</b> {{Matherial.poster.extension}}<br>
+									</div>
+									<div class='col-md-2'>
+										<a class="btn btn-outline-primary" onclick='onCountDownloadView("{{Matherial.poster.path}}")' ><i class="bi bi-cloud-arrow-down"></i> {{"Завантажити"|_}}</a>
+									</div>
+								</div>
+						{%endif%}
+						{% if Matherial.files%}
+							{%for file in Matherial.files %}
+								<div class="row mt-3">
+									<div class='col-md-1'>
+										{%if 'image' in file.content_type%}
+											<img src="{{file.thumb(200,200,{'mode':'crop'})}}" class="card-img-top pad-25" alt="...">
+										{%elseif 'video' in file.content_type%}
+											<img src="{{"assets/images/video.png"|theme}}" class="card-img-top pad-25" alt="...">
+										{%elseif 'application' in file.content_type%}
+											<img src="{{"assets/images/app.png"|theme}}" class="card-img-top pad-25" alt="...">
+										{%else%}
+											<img src="{{"assets/images/text.jpeg"|theme}}" class="card-img-top pad-25" alt="...">
+										{%endif%}
+									</div>
+									<div class='col-md-8'>
+										<b>File name:</b> {{file.file_name}}<br>
+										<b>File size:</b> {{((file.file_size/1024)/1024)|round(2, 'floor')}}Mb<br>
+										<b>File type:</b> {{file.content_type}}<br>
+										<b>File ext:</b> {{file.extension}}<br>
+									</div>
+									<div class='col-md-2'>
+										<a class="btn btn-outline-primary" onclick='onCountDownloadView("{{file.path}}")'><i class="bi bi-cloud-arrow-down"></i> {{"Завантажити"|_}}</a>
+									</div>
+								</div>
+							{%endfor%}
+						{%endif%}
+					</div>
+				{%endif%}
 			</div>
 
 		</article>
 	</section>
+	
+	
+	<script>
+		function onCountDownloadView(url){
+			$.request('onCountDownload', {
+				loading: "#loading-indicator", 
+				data: {
+					id: '{{Matherial.id}}'
+				},
+				success: function(data) {
+					window.location.href = url;
+				}
+			});
+		}
+	</script>
+	
+	
 {%endif%}

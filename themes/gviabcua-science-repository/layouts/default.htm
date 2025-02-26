@@ -1,8 +1,43 @@
 description = "Default layout"
 ==
 <?php
+use Gviabcua\Repository\Models\Views;
+
 function onInit(){
 	$this['config_app_name'] = Config::get('app.name');
+	$ip = $this->getUserIP();
+	$date = date('Y-m-d');
+	$v = Views::where('ip', $ip)->where('date', $date)->first();
+	if(isset($v->id)){
+		$v->increment('count');
+		$v->save();
+	}else{
+		$n = new Views;
+		$n->count = 1;
+		$n->date = $date;
+		$n->ip = $ip;
+		$n->save();
+	}
+}
+function getUserIP() {
+    $ipaddress = '';
+    if (isset($_SERVER['HTTP_CLIENT_IP']))
+        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+    else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    else if(isset($_SERVER['HTTP_X_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+    else if(isset($_SERVER['HTTP_X_CLUSTER_CLIENT_IP']))
+        $ipaddress = $_SERVER['HTTP_X_CLUSTER_CLIENT_IP'];
+    else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+    else if(isset($_SERVER['HTTP_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED'];
+    else if(isset($_SERVER['REMOTE_ADDR']))
+        $ipaddress = $_SERVER['REMOTE_ADDR'];
+    else
+        $ipaddress = 'UNKNOWN';
+    return $ipaddress;
 }
 ?>
 ==

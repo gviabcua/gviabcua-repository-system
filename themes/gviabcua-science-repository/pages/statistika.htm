@@ -1,0 +1,149 @@
+title = "Статистика"
+url = "/stat"
+layout = "default"
+is_hidden = 0
+==
+<?php
+use Gviabcua\Repository\Models\Authors;
+use Gviabcua\Repository\Models\Collections;
+use Gviabcua\Repository\Models\Matherials;
+use Gviabcua\Repository\Models\Themes;
+use Gviabcua\Repository\Models\Types;
+use Gviabcua\Repository\Models\Views;
+use System\Models\File;
+
+
+function onStart(){
+/*	for ($i = 720; $i >= 0; $i--){
+		$date = date("Y-m-d", strtotime( '-'.$i.' day' ));
+		$rand = rand(100,200);
+		for ($i2 = 0; $i2 <= $rand; $i2++){
+			$ip_address = mt_rand(1, 200) . '.' . mt_rand(0, 255) . '.' . mt_rand(0, 255) . '.' . mt_rand(1, 255);
+			$n = new Views;
+			$n->ip = $ip_address;
+			$n->date = $date;
+			$n->count = rand(1,5);
+			$n->save();
+		}
+	}
+*/
+	$this['Authors'] = Authors::count('id');
+	$this['Collections'] = Collections::count('id');
+	$this['Matherials'] = Matherials::count('id');
+	$this['Themes'] = Themes::count('id');
+	$this['Types'] = Types::count('id');
+	
+	$this['Matherials_views'] = Matherials::sum('views');
+	$this['Matherials_downloads'] = Matherials::sum('downloads');
+	
+	$this['Views_uniq_ip'] = Views::select('ip')->distinct()->count();
+	$this['Views_uniq_today'] = Views::select('ip')->where('date', date("Y-m-d"))->distinct()->count();
+	$this['Views_uniq_yesterday'] = Views::select('ip')->where('date', date("Y-m-d", strtotime( '-1 day' )))->distinct()->count();
+	$this['Views_uniq_week'] = Views::select('ip')->where('date', ">", date("Y-m-d", strtotime( '-7 day' )))->distinct()->count();
+	$this['Views_uniq_month'] = Views::select('ip')->where('date', ">", date("Y-m-d", strtotime( '-30 day' )))->distinct()->count();
+	$this['Views_uniq_year'] = Views::select('ip')->where('date', ">", date("Y-m-d", strtotime( '-365 day' )))->distinct()->count();
+	
+	$this['Views_total'] = Views::select('id')->sum('count');
+	$this['Views_today'] = Views::select('id')->where('date', date("Y-m-d"))->sum('count');
+	$this['Views_yesterday'] = Views::select('id')->where('date', date("Y-m-d", strtotime( '-1 day' )))->sum('count');
+	$this['Views_week'] = Views::select('id')->where('date', ">", date("Y-m-d", strtotime( '-7 day' )))->sum('count');
+	$this['Views_month'] = Views::select('id')->where('date', ">", date("Y-m-d", strtotime( '-30 day' )))->sum('count');
+	$this['Views_year'] = Views::select('id')->where('date', ">", date("Y-m-d", strtotime( '-365 day' )))->sum('count');
+	
+	$this['Files_total'] = File::where('is_public', 1)->count();
+	$this['Files_size'] = round(((File::where('is_public', 1)->sum("file_size")/1024)/1024),1).'Mb';
+	$this['Matherials_link'] = Matherials::where('url', '<>', null)->where('url', '<>', "")->count('id');
+}
+?>
+==
+<div class="card mt-3">
+	<div class="card-header text-center"><h6 class="text-center">{{"Статистика"|_}}</h6></div>
+	<div class="card-body">
+		<div class="row">
+			<div class = 'col-md-6'>
+				<ul class="list-group">
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Авторів"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Authors}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Колекцій"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Collections}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Тем"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Themes}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Типів"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Types}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Матеріалів"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Matherials}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start"></li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Переглядів опису матеріалів"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Matherials_views}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Переглядів повних текстів матеріалів"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Matherials_downloads}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start"></li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Файлів"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Files_total}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Сумарний розмір"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Files_size}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Зовнішніх посилань"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Matherials_link}}</span>
+					</li>
+					
+					
+					
+				</ul>
+			</div>
+			<div class = 'col-md-6'>
+				<ul class="list-group">
+					
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Переглядів сьогодні"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Views_today}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Переглядів вчора"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Views_yesterday}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Переглядів за тиждень"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Views_week}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Переглядів за місяць"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Views_month}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Переглядів за рік"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Views_year}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Переглядів всього"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Views_total}}</span>
+					</li>
+					
+					<li class="list-group-item d-flex justify-content-between align-items-start"></li>
+
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Унікальних відвідувачів сьогодні"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Views_uniq_today}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Унікальних відвідувачів вчора"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Views_uniq_yesterday}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Унікальних відвідувачів за тиждень"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Views_uniq_week}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Унікальних відвідувачів за місяць"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Views_uniq_month}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Унікальних відвідувачів за рік"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Views_uniq_year}}</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto"><div class="fw-bold">{{"Унікальних відвідувачів всього"|_}}</div></div><span class="badge text-bg-secondary rounded-pill">{{Views_uniq_ip}}</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+	</div>
+</div>
