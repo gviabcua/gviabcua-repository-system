@@ -11,8 +11,8 @@ class BuilderTableCreateGviabcuaRepositoryViews extends Migration
         {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id')->unsigned();
-            $table->dateTime('date')->nullable()->index('date');
-            $table->string('ip')->index('ip');
+            $table->dateTime('date')->nullable();
+            $table->string('ip');
             $table->integer('count')->default(0);
         });
     }

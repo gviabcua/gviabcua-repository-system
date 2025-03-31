@@ -2,6 +2,7 @@ columns:
     id:
         label: id
         type: number
+        searchable: false
     poster:
         label: 'gviabcua.repository::lang.poster'
         type: image
@@ -11,25 +12,25 @@ columns:
         searchable: true
     authors:
         label: 'gviabcua.repository::lang.Authors'
-        type: partial
+        relation: authors
+        select: name
         searchable: false
     types:
         label: 'gviabcua.repository::lang.types'
-        type: partial
+        relation: types
+        select: type
         searchable: false
     themes:
         label: 'gviabcua.repository::lang.Themes'
-        type: partial
+        relation: themes
+        select: theme
         searchable: false
     collections:
         label: 'gviabcua.repository::lang.Collections'
-        type: partial
+        relation: collections
+        select: collection
         searchable: false
     files:
         label: 'gviabcua.repository::lang.files'
         type: partial
         searchable: false
-    old_number:
-        label: s
-        type: number
-        searchable: true

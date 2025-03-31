@@ -65,4 +65,29 @@ class Matherials extends Model
 	public static function getRepositoryUrlHandle(){
 		return Config::get('app.url')."/handle/".Config::get('gviabcua_repository.handle_id');
 	}
+	
+	public function scopeFilterByAuthors($query, $value)
+	{
+		return $query->whereHas('authors', function ($q) use ($value) {
+			$q->whereIn("id",$value);
+		});
+	}
+	public function scopeFilterByTypes($query, $value)
+	{
+		return $query->whereHas('types', function ($q) use ($value) {
+			$q->whereIn("id",$value);
+		});
+	}
+	public function scopeFilterByThemes($query, $value)
+	{
+		return $query->whereHas('themes', function ($q) use ($value) {
+			$q->whereIn("id",$value);
+		});
+	}
+	public function scopeFilterByCollections($query, $value)
+	{
+		return $query->whereHas('collections', function ($q) use ($value) {
+			$q->whereIn("id",$value);
+		});
+	}
 }

@@ -1,0 +1,40 @@
+scopes:
+    id:
+        label: "ID"
+        type: number
+        conditions: id = ':filtered'
+        size: 5
+    title_orig:
+        label: Назва
+        type: text
+        conditions: title_orig like concat('%', :value, '%')
+        size: 10
+    year:
+        label: Рік
+        type: text
+        conditions: year like concat('%', :value, '%')
+        size: 4
+    authors:
+        label: Автори
+        type: group
+        modelClass: Gviabcua\Repository\Models\Authors
+        nameFrom: name
+        scope: filterByAuthors
+    types:
+        label: Типи
+        type: group
+        modelClass: Gviabcua\Repository\Models\Types
+        nameFrom: type
+        scope: filterByTypes
+    themes:
+        label: Теми
+        type: group
+        modelClass: Gviabcua\Repository\Models\Themes
+        nameFrom: theme
+        scope: filterByThemes
+    collections:
+        label: Колекції
+        type: group
+        modelClass: Gviabcua\Repository\Models\Collections
+        nameFrom: collection
+        scope: filterByCollections
